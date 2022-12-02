@@ -1,7 +1,6 @@
 from transformers import AutoTokenizer, AutoModelForQuestionAnswering
-from sklearn.preprocessing import normalize
 from IPython.core.display import display,HTML
-
+import numpy as np
 
 #Thanks to this answer: https://stackoverflow.com/questions/28907480/convert-0-1-floating-point-value-to-hex-color#28907772
 def blend(color, alpha, base=[255,255,255]):
@@ -24,6 +23,10 @@ def stylize(term, colors, logit,probs=True):
     if probs:
         tok += f'<sub>{prob}</sub>'
     return tok
+
+def normalize(data):
+    max = np.max(data)
+    return data/max
 
 model_name = "deepset/roberta-base-squad2"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
@@ -61,16 +64,18 @@ end_toks = []
 terms = tokenizer.convert_ids_to_tokens(input_ids)
 start_token_id = 0
 end_token_id = len(terms)
+
 for i in range(len(terms)):
-    print(terms[i])
-    start_toks.append(stylize(terms[i],[0,127,255],start_logits_norm[0][i]))
-    end_toks.append(stylize(terms[i],[255,0,255],end_logits_norm[0][i]))
+    print(cleantok(terms[i]), start_logits_norm[0][i], end_logits_norm[0][i])
+    # start_toks.append(stylize(terms[i],[0,127,255],start_logits_norm[0][i]))
+    # end_toks.append(stylize(terms[i],[255,0,255],end_logits_norm[0][i]))
     if start_logits_norm[0][i]==1.:
         start_token_id = i
     if end_logits_norm[0][i]==1.:
         end_token_id = i+1
 answer = terms[start_token_id:end_token_id]
 
+print(start_token_id, end_token_id)
 print(cleantok(' '.join(answer)))
 print(' '.join(start_toks))
 print(' '.join(end_toks))
