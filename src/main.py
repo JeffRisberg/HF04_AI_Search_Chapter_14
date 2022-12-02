@@ -12,7 +12,7 @@ def blend(color, alpha, base=[255,255,255]):
 def cleantok(tok):
     return tok.replace(u'Ġ','_').replace('<','&lt;').replace('>','&gt;')
 
-def stylize(term,colors,logit,probs=True):
+def stylize(term, colors, logit,probs=True):
     term = cleantok(term)
     color = blend(colors,logit)
     prob = str(logit)[:4]
