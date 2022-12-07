@@ -26,7 +26,8 @@ def stylize(term, colors, logit,probs=True):
 
 def normalize(data):
     max = np.max(data)
-    return data/max
+    min = np.min(data)
+    return (data - min) / (max-min)
 
 model_name = "deepset/roberta-base-squad2"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
@@ -67,8 +68,8 @@ end_token_id = len(terms)
 
 for i in range(len(terms)):
     print(cleantok(terms[i]), start_logits_norm[0][i], end_logits_norm[0][i])
-    # start_toks.append(stylize(terms[i],[0,127,255],start_logits_norm[0][i]))
-    # end_toks.append(stylize(terms[i],[255,0,255],end_logits_norm[0][i]))
+    start_toks.append(stylize(terms[i],[0,127,255],start_logits_norm[0][i]))
+    end_toks.append(stylize(terms[i],[255,0,255],end_logits_norm[0][i]))
     if start_logits_norm[0][i]==1.:
         start_token_id = i
     if end_logits_norm[0][i]==1.:
