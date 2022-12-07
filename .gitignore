@@ -3,3 +3,4 @@
 .idea/tasks
 data/question-answering-training-set/
 mlruns/
+data/questionanswering/logs/
