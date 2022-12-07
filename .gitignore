@@ -2,3 +2,4 @@
 .idea/sonarlint
 .idea/tasks
 data/question-answering-training-set/
+mlruns/
